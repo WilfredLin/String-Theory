@@ -1,0 +1,42 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class ClassicalBosonicString:
+    def __init__(self, length=1.0, tension=1.0):
+        self.length = length
+        self.tension = tension
+        self.points = np.linspace(0, length, 100)
+        self.displacement = np.zeros_like(self.points)
+
+    def set_initial_conditions(self, initial_displacement, initial_velocity):
+        self.displacement = initial_displacement
+        self.velocity = initial_velocity
+
+    def update(self, dt):
+        # Update the displacement using a simple wave equation
+        self.displacement += self.velocity * dt
+        # Apply tension to simulate wave propagation
+        self.velocity -= (self.tension / self.length) * self.displacement * dt
+
+    def simulate(self, time_steps, dt):
+        for _ in range(time_steps):
+            self.update(dt)
+            self.plot()
+
+    def plot(self):
+        plt.clf()
+        plt.plot(self.points, self.displacement)
+        plt.title('Classical Bosonic String')
+        plt.xlabel('Position along the string')
+        plt.ylabel('Displacement')
+        plt.ylim(-1.5, 1.5)
+        plt.pause(0.1)
+
+if __name__ == '__main__':
+    string = ClassicalBosonicString()
+    initial_displacement = np.sin(2 * np.pi * string.points / string.length)
+    initial_velocity = np.zeros_like(string.points)
+    string.set_initial_conditions(initial_displacement, initial_velocity)
+    plt.ion()
+    string.simulate(100, 0.01)
+    plt.show()
