@@ -1,0 +1,50 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class QuantizedBosonicString:
+    def __init__(self, length=1.0, tension=1.0, num_modes=10):
+        self.length = length
+        self.tension = tension
+        self.num_modes = num_modes
+        self.points = np.linspace(0, length, 100)
+        self.displacement = np.zeros_like(self.points)
+        self.omega = np.zeros(num_modes)
+
+        # Calculate the angular frequencies for the modes
+        for n in range(1, num_modes + 1):
+            self.omega[n - 1] = np.sqrt(n * np.pi * self.tension / self.length)
+
+    def set_initial_conditions(self, amplitudes):
+        # Set initial conditions based on the amplitudes of the modes
+        for n in range(self.num_modes):
+            self.displacement += amplitudes[n] * np.sin((n * np.pi * self.points) / self.length)
+
+    def update(self, dt, time):
+        # Update the displacement using the quantized modes
+        self.displacement = np.zeros_like(self.points)
+        for n in range(self.num_modes):
+            self.displacement += np.sin((n + 1) * np.pi * self.points / self.length) * np.cos(self.omega[n] * time)
+
+    def simulate(self, total_time, dt):
+        num_steps = int(total_time / dt)
+        for step in range(num_steps):
+            time = step * dt
+            self.update(dt, time)
+            self.plot()
+
+    def plot(self):
+        plt.clf()
+        plt.plot(self.points, self.displacement)
+        plt.title('Quantized Bosonic String')
+        plt.xlabel('Position along the string')
+        plt.ylabel('Displacement')
+        plt.ylim(-1.5, 1.5)
+        plt.pause(0.1)
+
+if __name__ == '__main__':
+    string = QuantizedBosonicString()
+    amplitudes = np.random.rand(string.num_modes)  # Random amplitudes for each mode
+    string.set_initial_conditions(amplitudes)
+    plt.ion()
+    string.simulate(10, 0.01)
+    plt.show()
