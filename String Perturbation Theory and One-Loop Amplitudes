@@ -1,0 +1,44 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class StringPerturbationTheory:
+    def __init__(self, num_loops=1, num_points=100):
+        self.num_loops = num_loops
+        self.num_points = num_points
+        self.parameters = np.linspace(0, 1, num_points)
+        self.amplitudes = np.zeros((num_loops, num_points))
+
+    def set_initial_conditions(self, initial_values):
+        for i in range(self.num_loops):
+            self.amplitudes[i] = initial_values[i] * np.exp(-self.parameters / (i + 1))
+
+    def update(self, dt):
+        for i in range(self.num_loops):
+            perturbation = (np.random.rand(self.num_points) - 0.5) * 0.1  # Small random perturbation
+            self.amplitudes[i] += dt * perturbation
+
+    def simulate(self, total_time, dt):
+        num_steps = int(total_time / dt)
+        for step in range(num_steps):
+            self.update(dt)
+            self.plot(step)
+
+    def plot(self, step):
+        plt.clf()
+        for i in range(self.num_loops):
+            plt.plot(self.parameters, self.amplitudes[i], label=f'Loop {i + 1}')
+        plt.title(f'String Perturbation Theory - One-Loop Amplitudes Simulation - Step {step}')
+        plt.xlabel('Parameter')
+        plt.ylabel('Amplitude Value')
+        plt.ylim(-1, 2)
+        plt.legend()
+        plt.pause(0.1)
+
+if __name__ == '__main__':
+    num_loops = 2
+    initial_values = np.random.rand(num_loops)  # Random initial values for each loop
+    spt = StringPerturbationTheory(num_loops=num_loops)
+    spt.set_initial_conditions(initial_values)
+    plt.ion()
+    spt.simulate(10, 0.01)
+    plt.show()
