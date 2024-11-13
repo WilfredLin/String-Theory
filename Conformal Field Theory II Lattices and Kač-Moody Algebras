@@ -1,0 +1,62 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class CFTLattice:
+    def __init__(self, dimensions, num_points):
+        self.dimensions = dimensions
+        self.num_points = num_points
+        self.lattice_points = np.zeros((dimensions, num_points))  # points in the CFT lattice
+
+    def generate_lattice(self):
+        # Generate lattice points for a conformal field theory
+        for i in range(self.num_points):
+            for d in range(self.dimensions):
+                self.lattice_points[d, i] = np.random.uniform(-1, 1)  # Random points in the unit cube
+
+    def plot_lattice(self):
+        if self.dimensions == 2:
+            plt.scatter(self.lattice_points[0], self.lattice_points[1], label='CFT Lattice', alpha=0.5)
+            plt.xlim(-1, 1)
+            plt.ylim(-1, 1)
+            plt.title('2D CFT Lattice')
+            plt.xlabel('X Position')
+            plt.ylabel('Y Position')
+            plt.axhline(0, color='black', linewidth=0.5, ls='--')
+            plt.axvline(0, color='black', linewidth=0.5, ls='--')
+            plt.grid()
+            plt.legend()
+            plt.show()
+        else:
+            print("Plotting is currently only supported for 2 dimensions.")
+
+class KacMoodyAlgebra:
+    def __init__(self, rank):
+        self.rank = rank
+        self.cartan_matrix = np.zeros((rank, rank))  # Cartan matrix
+
+    def generate_cartan_matrix(self):
+        # Generate a simple Cartan matrix for a Kac-Moody algebra
+        for i in range(self.rank):
+            for j in range(self.rank):
+                if i == j:
+                    self.cartan_matrix[i, j] = 2
+                elif abs(i - j) == 1:
+                    self.cartan_matrix[i, j] = -1
+
+    def display_cartan_matrix(self):
+        print("Cartan Matrix:")
+        print(self.cartan_matrix)
+
+if __name__ == '__main__':
+    # Conformal Field Theory Lattice
+    dimensions = 2  # Number of dimensions for the CFT lattice
+    num_points = 100  # Number of points to generate
+    cft_lattice = CFTLattice(dimensions, num_points)
+    cft_lattice.generate_lattice()
+    cft_lattice.plot_lattice()
+
+    # Kac-Moody Algebra
+    rank = 3  # Rank of the Kac-Moody algebra
+    kac_moody = KacMoodyAlgebra(rank)
+    kac_moody.generate_cartan_matrix()
+    kac_moody.display_cartan_matrix()
