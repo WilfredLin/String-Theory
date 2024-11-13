@@ -1,0 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class ParametrizationGhostsBRST:
+    def __init__(self, num_parameters=2, num_points=100):
+        self.num_parameters = num_parameters
+        self.num_points = num_points
+        self.parameters = np.linspace(0, 1, num_points)
+        self.ghosts = np.zeros((num_parameters, num_points))
+
+    def set_initial_conditions(self, amplitudes):
+        for i in range(self.num_parameters):
+            self.ghosts[i] = amplitudes[i] * np.sin((i + 1) * np.pi * self.parameters)
+
+    def update(self, dt):
+        for i in range(self.num_parameters):
+            self.ghosts[i] += dt * (np.random.rand(self.num_points) - 0.5)  # Random perturbation
+
+    def simulate(self, total_time, dt):
+        num_steps = int(total_time / dt)
+        for step in range(num_steps):
+            self.update(dt)
+            self.plot(step)
+
+    def plot(self, step):
+        plt.clf()
+        for i in range(self.num_parameters):
+            plt.plot(self.parameters, self.ghosts[i], label=f'Ghost {i + 1}')
+        plt.title(f'Parametrization Ghosts and BRST Quantization Simulation - Step {step}')
+        plt.xlabel('Parameter')
+        plt.ylabel('Ghost Value')
+        plt.ylim(-2, 2)
+        plt.legend()
+        plt.pause(0.1)
+
+if __name__ == '__main__':
+    num_parameters = 2
+    amplitudes = np.random.rand(num_parameters)  # Random amplitudes for each ghost
+    brst = ParametrizationGhostsBRST(num_parameters=num_parameters)
+    brst.set_initial_conditions(amplitudes)
+    plt.ion()
+    brst.simulate(10, 0.01)
+    plt.show()
