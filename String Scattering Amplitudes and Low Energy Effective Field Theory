@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class StringScatteringAmplitudes:
+    def __init__(self, string_type, energy_scale):
+        self.string_type = string_type
+        self.energy_scale = energy_scale
+        self.amplitudes = None  # Scattering amplitudes representation
+
+    def calculate_amplitudes(self):
+        # Calculate scattering amplitudes based on string type and energy scale
+        if self.string_type == "Type II":
+            self.amplitudes = np.random.uniform(0, 1, 10) * self.energy_scale
+        elif self.string_type == "Heterotic":
+            self.amplitudes = np.random.uniform(0, 1, 10) * 0.5 * self.energy_scale
+        else:
+            raise ValueError("Unknown string type.")
+
+    def display_amplitudes(self):
+        print(f"Scattering Amplitudes for {self.string_type} String:")
+        print(self.amplitudes)
+
+class LowEnergyEffectiveFieldTheory:
+    def __init__(self, dimensions, coupling_constant):
+        self.dimensions = dimensions
+        self.coupling_constant = coupling_constant
+        self.effective_action = np.zeros((dimensions, dimensions))  # Effective action representation
+
+    def generate_effective_action(self):
+        # Generate the effective action based on dimensions and coupling constant
+        for i in range(self.dimensions):
+            for j in range(self.dimensions):
+                self.effective_action[i, j] = self.coupling_constant * (i + j + 1)
+
+    def display_effective_action(self):
+        print("Effective Action Matrix:")
+        print(self.effective_action)
+
+# Example usage
+if __name__ == "__main__":
+    # Create a StringScatteringAmplitudes object
+    string_amplitudes = StringScatteringAmplitudes("Type II", 10)
+    string_amplitudes.calculate_amplitudes()
+    string_amplitudes.display_amplitudes()
+
+    # Create a LowEnergyEffectiveFieldTheory object
+    leeft = LowEnergyEffectiveFieldTheory(3, 0.1)
+    leeft.generate_effective_action()
+    leeft.display_effective_action()
