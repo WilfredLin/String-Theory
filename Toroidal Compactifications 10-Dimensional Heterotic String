@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class ToroidalCompactification:
+    def __init__(self, dimensions, radius, num_points):
+        self.dimensions = dimensions
+        self.radius = radius
+        self.num_points = num_points
+        self.positions = np.zeros((dimensions, num_points))  # positions in n-dimensional space
+
+    def generate_positions(self):
+        # Generate positions in a toroidal compactification
+        for i in range(self.num_points):
+            for d in range(self.dimensions):
+                angle = np.random.uniform(0, 2 * np.pi)
+                self.positions[d, i] = self.radius * np.cos(angle) if d % 2 == 0 else self.radius * np.sin(angle)
+
+    def plot_compactification(self):
+        if self.dimensions == 2:
+            plt.scatter(self.positions[0], self.positions[1], label='Toroidal Compactification', alpha=0.5)
+            plt.xlim(-self.radius, self.radius)
+            plt.ylim(-self.radius, self.radius)
+            plt.title('2D Toroidal Compactification')
+            plt.xlabel('X Position')
+            plt.ylabel('Y Position')
+            plt.axhline(0, color='black', linewidth=0.5, ls='--')
+            plt.axvline(0, color='black', linewidth=0.5, ls='--')
+            plt.grid()
+            plt.legend()
+            plt.show()
+        else:
+            print("Plotting is currently only supported for 2 dimensions.")
+
+if __name__ == '__main__':
+    dimensions = 2  # Number of dimensions for the toroidal compactification
+    radius = 5      # Radius of the torus
+    num_points = 100  # Number of points to generate
+    toroidal_compactification = ToroidalCompactification(dimensions, radius, num_points)
+    toroidal_compactification.generate_positions()
+    toroidal_compactification.plot_compactification()
