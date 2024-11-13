@@ -1,0 +1,34 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class ClassicalFermionicString:
+    def __init__(self, length, tension):
+        self.length = length
+        self.tension = tension
+        self.positions = np.zeros((2, 100))  # 2D positions
+
+    def update_positions(self, time):
+        # Simple harmonic motion for demonstration
+        self.positions[0] = self.length * np.sin(2 * np.pi * time / 10)  # x-position
+        self.positions[1] = self.length * np.cos(2 * np.pi * time / 10)  # y-position
+
+    def plot_string(self, time):
+        self.update_positions(time)
+        plt.plot(self.positions[0], self.positions[1], label='Fermionic String')
+        plt.xlim(-self.length, self.length)
+        plt.ylim(-self.length, self.length)
+        plt.title('Classical Fermionic String Motion')
+        plt.xlabel('X Position')
+        plt.ylabel('Y Position')
+        plt.axhline(0, color='black',linewidth=0.5, ls='--')
+        plt.axvline(0, color='black',linewidth=0.5, ls='--')
+        plt.grid()
+        plt.legend()
+        plt.show()
+
+if __name__ == '__main__':
+    length = 5  # Length of the string
+    tension = 1  # Tension of the string
+    fermionic_string = ClassicalFermionicString(length, tension)
+    for t in np.linspace(0, 20, 100):
+        fermionic_string.plot_string(t)
