@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class QuantizedFermionicString:
+    def __init__(self, length, tension, num_modes):
+        self.length = length
+        self.tension = tension
+        self.num_modes = num_modes
+        self.positions = np.zeros((2, 100))  # 2D positions
+
+    def update_positions(self, time):
+        # Simple model of quantized modes
+        for n in range(1, self.num_modes + 1):
+            self.positions[0] += (self.length / n) * np.sin(n * np.pi * time / 10)  # x-position
+            self.positions[1] += (self.length / n) * np.cos(n * np.pi * time / 10)  # y-position
+
+    def plot_string(self, time):
+        self.update_positions(time)
+        plt.plot(self.positions[0], self.positions[1], label='Quantized Fermionic String')
+        plt.xlim(-self.length, self.length)
+        plt.ylim(-self.length, self.length)
+        plt.title('Quantized Fermionic String Motion')
+        plt.xlabel('X Position')
+        plt.ylabel('Y Position')
+        plt.axhline(0, color='black', linewidth=0.5, ls='--')
+        plt.axvline(0, color='black', linewidth=0.5, ls='--')
+        plt.grid()
+        plt.legend()
+        plt.show()
+
+if __name__ == '__main__':
+    length = 5  # Length of the string
+    tension = 1  # Tension of the string
+    num_modes = 5  # Number of quantized modes
+    fermionic_string = QuantizedFermionicString(length, tension, num_modes)
+    for t in np.linspace(0, 20, 100):
+        fermionic_string.plot_string(t)
