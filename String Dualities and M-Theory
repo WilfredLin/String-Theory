@@ -1,0 +1,57 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class StringDualities:
+    def __init__(self, coupling_constant):
+        self.coupling_constant = coupling_constant
+
+    def s_duality(self):
+        # S-duality transformation
+        return 1 / self.coupling_constant
+
+    def t_duality(self, radius):
+        # T-duality transformation
+        return 1 / radius
+
+class MTheory:
+    def __init__(self, dimensions):
+        self.dimensions = dimensions
+        self.brane_positions = []
+
+    def add_brane(self, position):
+        self.brane_positions.append(position)
+
+    def calculate_interaction(self):
+        # Calculate interactions between branes based on their positions
+        interactions = []
+        for i in range(len(self.brane_positions)):
+            for j in range(i + 1, len(self.brane_positions)):
+                distance = np.linalg.norm(self.brane_positions[i] - self.brane_positions[j])
+                interactions.append((i, j, distance))
+        return interactions
+
+    def display_brane_info(self):
+        for i, position in enumerate(self.brane_positions):
+            print(f"Brane {i} at position {position}")
+
+# Example usage
+if __name__ == "__main__":
+    # Create a String Dualities object
+    string_duality = StringDualities(0.5)
+    print(f"S-duality coupling: {string_duality.s_duality()}")
+    
+    radius = 2.0
+    print(f"T-duality radius: {string_duality.t_duality(radius)}")
+
+    # Create an M-Theory object
+    m_theory = MTheory(11)
+    m_theory.add_brane(np.array([1, 2, 3]))
+    m_theory.add_brane(np.array([4, 5, 6]))
+    m_theory.add_brane(np.array([7, 8, 9]))
+
+    # Display brane information and interactions
+    m_theory.display_brane_info()
+    interactions = m_theory.calculate_interaction()
+    print("Brane interactions (index1, index2, distance):")
+    for interaction in interactions:
+        print(interaction)
